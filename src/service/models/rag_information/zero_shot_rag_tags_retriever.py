@@ -4,6 +4,7 @@ from typing import List, Optional
 
 import pandas as pd
 import requests
+import torch
 from bs4 import BeautifulSoup
 from transformers import pipeline
 
@@ -37,7 +38,7 @@ class ZeroShotRagTagsRetriever(ITagsRetriever):
             self._classifier = pipeline(
                 "zero-shot-classification",
                 model=self._MODEL_PATH.as_posix(),
-                device="gpu",
+                device="cuda" if torch.cuda.is_available() else "cpu",
             )
             self._logger.info("Zero-shot classification model loaded successfully.")
         except Exception as e:
