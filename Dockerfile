@@ -1,22 +1,16 @@
-FROM python:3.11-slim
-WORKDIR /root/src
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04
+WORKDIR /root/src/
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
-    gcc \
-    libc-dev \
-    libffi-dev \
-    python3-dev \
-    g++ \
-    swig \
-    bash \
-    netcat-traditional \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN python -m pip install --upgrade pip
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3-pip python3-dev build-essential cmake zlib1g-dev curl \
+    gcc libc-dev libffi-dev g++ swig bash netcat-traditional \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN python3 -m pip install --upgrade pip setuptools
 
 COPY . src
 RUN pip install poetry
