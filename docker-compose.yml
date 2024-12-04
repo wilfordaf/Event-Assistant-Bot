@@ -22,7 +22,7 @@ services:
       - ollama:ollama
     restart: always
     volumes:
-      - ./models:/root/src/models
+      - ./models:/root/src/src/models
     networks:
       - app-network
 
@@ -53,11 +53,10 @@ services:
       - "11434:11434"
     restart: always
     volumes:
-      - ./ollama_data:/root/.ollama
-      - ./bin/ollama-entrypoint.sh:/ollama-entrypoint.sh
+      - C:\Users\emperor\.ollama:/root/.ollama
     networks:
       - app-network
-    entrypoint: ["/usr/bin/bash", "/ollama-entrypoint.sh"]
+    entrypoint: ["ollama", "serve"]
 
 networks:
   app-network:
